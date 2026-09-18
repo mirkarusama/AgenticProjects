@@ -1,6 +1,6 @@
-# Email Humanizer - LangChain Single Agent Project
+# Product Description Agent - LangChain Single Agent Project
 
-A beginner-friendly project that teaches you how to build a **single agent** using **LangChain + OpenAI**. The agent takes a brief email idea and generates a natural, human-sounding email.
+A beginner-friendly project that teaches you how to build a **single agent** using **LangChain + OpenAI**. The agent takes raw product specs, a target customer, and a brand tone, and generates a persuasive, honest e-commerce listing.
 
 ## What You'll Learn
 
@@ -13,22 +13,23 @@ A beginner-friendly project that teaches you how to build a **single agent** usi
 ## How It Works
 
 ```
-User's email idea
+Product specs, target customer, brand tone
        |
        v
-  [Agent thinks: "I need to draft an email first"]
+  [Agent thinks: "I need to extract the product's value first"]
        |
        v
-  [Tool: draft_email] --> creates a formal, structured email
+  [Tool: extract_product_value] --> builds a structured value map
+       (features, benefits, differentiators, proof points, gaps)
        |
        v
-  [Agent thinks: "Now I should humanize this draft"]
+  [Agent thinks: "Now I should write the listing"]
        |
        v
-  [Tool: humanize_email] --> rewrites it to sound natural and warm
+  [Tool: write_product_listing] --> title, summary, bullets, description, SEO meta
        |
        v
-  Final humanized email returned to user
+  Final product listing returned to user
 ```
 
 ## Prerequisites
@@ -41,8 +42,8 @@ User's email idea
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/NisargKadam/Langchain_sample_project.git
-cd Langchain_sample_project
+git clone <YOUR_REPO_URL>
+cd <YOUR_REPO_FOLDER>
 ```
 
 ### 2. Create a virtual environment
@@ -55,11 +56,11 @@ Activate it:
 
 - **Windows (PowerShell):**
   ```powershell
-  .venv\Scripts\Activate
+.venv\Scripts\Activate
   ```
 - **macOS / Linux:**
   ```bash
-  source .venv/bin/activate
+source .venv/bin/activate
   ```
 
 ### 3. Install dependencies
@@ -85,57 +86,60 @@ OPENAI_API_KEY=sk-your-actual-key-here
 ## Run
 
 ```bash
-python email_humanizer_agent.py
+python product_description_agent.py
 ```
 
 You'll see an interactive prompt:
 
 ```
-EMAIL HUMANIZER AGENT (LangChain + OpenAI)
-Describe the email you want to write. Type 'quit' to exit.
+PRODUCT DESCRIPTION AGENT (LangChain + OpenAI)
+Describe the product: specs, target customer, and brand tone. Type 'quit' to exit.
 
-Your email idea:
+Your product details:
 ```
 
-Type your email idea (e.g., `thank my team for finishing the project on time`) and the agent will generate a humanized email. You'll also see a log line for each tool the agent calls.
+Type your product details (e.g., `Specs: Stainless steel 1L insulated water bottle, keeps drinks cold for 24 hours...`) and the agent will generate a ready-to-publish listing. You'll also see a log line for each tool the agent calls.
 
 ## Example
 
 **Input:**
 ```
-thank my team for finishing the project on time
+Specs: Stainless steel 1L insulated water bottle, keeps drinks cold for 24 hours and hot for 12 hours, leak-proof lid, BPA-free, weighs 350g, available in 6 colors. Target customer: busy professionals and gym-goers. Brand tone: confident and energetic, no corporate jargon.
 ```
 
 **Output:**
 ```
-Subject: Huge Thanks for Your Amazing Work on the Project!
+Title: Insulated Steel Water Bottle - 24Hr Cold, 12Hr Hot, Leak-Proof, 1L
 
-Hey Team,
+Summary: Stay refreshed all day with a bottle built to keep pace with you -
+cold for 24 hours, hot for 12, and never a drop out of place.
 
-I hope you're all doing well! I just wanted to take a minute to say a big
-thank you for all the hard work you put into getting the project done on time.
-Your dedication and teamwork really made a difference, and I can't tell you
-how much I appreciate it.
+Benefit Bullets:
+- 24-hour cold / 12-hour hot retention - one bottle for your coffee and your workout
+- Leak-proof lid - toss it in your bag without worry
+- BPA-free stainless steel - a safer daily-carry material
+- 350g lightweight build - easy to carry all day
+- 6 color options - match it to your style
 
-Each of you brought something special to the table, and I'm so proud to be
-part of such a talented group. Let's keep this momentum going and continue
-to achieve great things together!
+Detailed Description:
+Built for people who don't have time to babysit their water bottle, this
+1L stainless steel bottle holds its temperature far longer than a typical
+daily-carry option. The leak-proof lid means it goes straight into your gym
+bag or backpack without a second thought...
 
-Thanks again for everything!
-
-Best,
-[Your Name]
+SEO Meta Description: Insulated steel water bottle keeps drinks cold 24hrs,
+hot 12hrs. Leak-proof, BPA-free, 350g. Available in 6 colors.
 ```
 
 ## Project Structure
 
 ```
 .
-├── email_humanizer_agent.py   # Main agent code
-├── requirements.txt           # Python dependencies
-├── .env.example               # API key template
-├── .gitignore                 # Keeps secrets and venv out of git
-└── README.md                  # This file
+├── product_description_agent.py   # Main agent code
+├── requirements.txt                # Python dependencies
+├── .env.example                    # API key template
+├── .gitignore                      # Keeps secrets and venv out of git
+└── README.md                       # This file
 ```
 
 ## Tech Stack
