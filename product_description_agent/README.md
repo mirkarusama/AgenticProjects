@@ -42,8 +42,8 @@ Product specs, target customer, brand tone
 ### 1. Clone the repository
 
 ```bash
-git clone <YOUR_REPO_URL>
-cd <YOUR_REPO_FOLDER>
+git clone https://github.com/mirkarusama/AgenticProjects
+cd product_description_agent
 ```
 
 ### 2. Create a virtual environment
