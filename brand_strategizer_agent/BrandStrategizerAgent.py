@@ -18,7 +18,7 @@
 # 2. Nodes -- each function does one job (audience, positioning, channels, etc.)
 # 3. Parallel Execution -- 3 specialist nodes run at the same time
 # 4. Fan-in -- waiting for all 3 specialist notes before deciding the strategy
-# 5. Conditional Edges -- routing to focused vs broad based on the decision
+# 5. Conditional Edges -- routing on `launch_strategy` ("focused" or "broad")
 # 6. Graph Compilation -- turning the graph definition into a runnable app
 #
 # GRAPH STRUCTURE:
@@ -40,7 +40,7 @@
 #                                        END                END
 #
 # HOW TO RUN:
-#   python launch_strategy_graph.py
+#   python BrandStrategizerAgent.py
 #
 # DEPENDENCIES (same as requirements.txt):
 #   langgraph, langchain-openai, python-dotenv, pydantic
@@ -66,7 +66,7 @@ class LaunchState(BaseModel):
     audience_notes: str = ""
     positioning_notes: str = ""
     channel_notes: str = ""
-    needs_broad_launch: bool = False
+    launch_strategy: str = "focused"
     strategy_reason: str = ""
     final_plan: str = ""
     messages: Annotated[list, operator.add] = []
@@ -140,20 +140,22 @@ def select_launch_strategy(state: LaunchState) -> dict:
         f"good for niche or early-stage products) or BROAD / MULTI-CHANNEL (wide audience, "
         f"several channels at once, good for mass-market or well-funded products)?\n\n"
         f"Reply STRICTLY in this JSON format (no other text):\n"
-        f'{{"needs_broad_launch": true/false, "reason": "one sentence explanation"}}'
+        f'{{"launch_strategy": "focused" or "broad", "reason": "one sentence explanation"}}'
     )
     try:
         result = json.loads(response.content)
-        needs_broad = result["needs_broad_launch"]
+        launch_strategy = result["launch_strategy"].strip().lower()
+        if launch_strategy not in ("focused", "broad"):
+            raise ValueError("Unexpected launch_strategy value")
         reason = result["reason"]
-    except (json.JSONDecodeError, KeyError):
-        needs_broad = False
+    except (json.JSONDecodeError, KeyError, AttributeError, ValueError):
+        launch_strategy = "focused"
         reason = "Could not parse decision, defaulting to focused launch."
 
     return {
-        "needs_broad_launch": needs_broad,
+        "launch_strategy": launch_strategy,
         "strategy_reason": reason,
-        "messages": [f"[select_launch_strategy] broad_launch={needs_broad}"]
+        "messages": [f"[select_launch_strategy] launch_strategy={launch_strategy}"]
     }
 
 
@@ -194,10 +196,7 @@ def multi_channel_launch_plan(state: LaunchState) -> dict:
 
 
 def route_after_decision(state: LaunchState) -> str:
-    if state.needs_broad_launch:
-        return "broad"
-    else:
-        return "focused"
+    return state.launch_strategy
 
 
 graph = StateGraph(LaunchState)

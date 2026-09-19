@@ -54,16 +54,17 @@ The graph then:
 | Nodes | `understand_product`, `define_target_audience`, `develop_brand_positioning`, `recommend_launch_channels`, `select_launch_strategy`, `focused_launch_plan`, `multi_channel_launch_plan` |
 | Parallel execution | Three specialist nodes run after `understand_product` |
 | Fan-in | All three specialist notes flow into `select_launch_strategy` |
-| Conditional edges | `route_after_decision` sends the graph to focused or broad launch |
+| Conditional edges | `route_after_decision` routes on the `launch_strategy` field ("focused" or "broad") |
 | Final output | `focused_launch_plan` or `multi_channel_launch_plan` |
 | Message accumulation | `messages: Annotated[list, operator.add]` |
+| Routing field | `launch_strategy` — set by `select_launch_strategy`, read by `route_after_decision` |
 
 ---
 
 ## Project Files
 
 ```text
-launch_strategy_graph.py   Main LangGraph project
+BrandStrategizerAgent.py   Main LangGraph project
 architecture.md            Architecture explanation
 architecture.drawio        Diagram source file
 requirements.txt           Python dependencies
@@ -112,7 +113,7 @@ Never commit your real `.env` file.
 ### 4. Run the project
 
 ```powershell
-python launch_strategy_graph.py
+python BrandStrategizerAgent.py
 ```
 
 ---
@@ -141,13 +142,13 @@ The graph will:
 
 | Step | What Happens | File |
 |---|---|---|
-| 1 | Define `LaunchState` | `launch_strategy_graph.py` |
-| 2 | Initialize `ChatOpenAI` | `launch_strategy_graph.py` |
-| 3 | Define graph node functions | `launch_strategy_graph.py` |
-| 4 | Define `route_after_decision` | `launch_strategy_graph.py` |
-| 5 | Add nodes and edges to `StateGraph` | `launch_strategy_graph.py` |
-| 6 | Compile graph as `app` | `launch_strategy_graph.py` |
-| 7 | Run with `run_launch_strategy()` | `launch_strategy_graph.py` |
+| 1 | Define `LaunchState` | `BrandStrategizerAgent.py` |
+| 2 | Initialize `ChatOpenAI` | `BrandStrategizerAgent.py` |
+| 3 | Define graph node functions | `BrandStrategizerAgent.py` |
+| 4 | Define `route_after_decision` | `BrandStrategizerAgent.py` |
+| 5 | Add nodes and edges to `StateGraph` | `BrandStrategizerAgent.py` |
+| 6 | Compile graph as `app` | `BrandStrategizerAgent.py` |
+| 7 | Run with `run_launch_strategy()` | `BrandStrategizerAgent.py` |
 
 ---
 
