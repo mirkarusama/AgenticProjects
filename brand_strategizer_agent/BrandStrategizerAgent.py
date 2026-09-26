@@ -1,7 +1,6 @@
 # =============================================================================
 # Product Launch Strategy Builder -- A LangGraph Learning Project
-# =============================================================================
-#
+
 # This project teaches you how LangGraph works by building a product launch
 # strategy assistant that develops audience, positioning, and channel plans.
 #
